@@ -1,0 +1,28 @@
+{
+  "author": "Marco Castelluccio",
+  "manifest_version": 2,
+  "name": "Bugzilla Data Collector",
+  "version": "0.0.1",
+  "icons": {
+    "256": "bdc.png"
+  },
+  "description": "An extension to help collecting data on Bugzilla.",
+  "content_scripts": [
+    {
+      "matches": ["*://bugzilla.mozilla.org/show_bug.cgi?id=*"],
+      "js": ["bugzilla.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "browser_style": true
+  },
+  "permissions": ["storage", "downloads"],
+  "homepage_url": "https://github.com/marco-c/bugzilla-data-collector",
+  "applications": {
+      "gecko": {
+          "id": "bugzilla_data_collector@marco"
+      }
+  }
+}
