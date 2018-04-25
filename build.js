@@ -7,6 +7,7 @@ const archiver = require('archiver');
 const includeFiles = [
   'manifest.json',
   'bugzilla.js', 'bdc.png',
+  'options.html', 'options.js',
 ];
 const zipName = './bugzilla-data-collector.zip';
 
