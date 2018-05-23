@@ -4,6 +4,24 @@
 
 'use strict';
 
+function addChoice(form, value, text) {
+  const choice = document.createElement('input');
+  choice.id = `bdc_${value}Choice`;
+  choice.type = 'radio';
+  choice.value = value;
+  choice.name = 'bug_nobug_choice';
+
+  const choiceLabel = document.createElement('label');
+  choiceLabel.htmlFor = choice.id;
+  choiceLabel.textContent = text;
+
+  form.appendChild(choice);
+  form.appendChild(choiceLabel);
+  form.appendChild(document.createElement('br'));
+
+  return choice;
+}
+
 (function() {
   const bugId = document.getElementById('bug_id').value;
 
@@ -13,46 +31,37 @@
   }
 
   const form = document.createElement('form');
-  const bugChoice = document.createElement('input');
-  bugChoice.id = 'bdc_bugChoice';
-  bugChoice.type = 'radio';
-  bugChoice.value = 'bug';
-  bugChoice.name = 'bug_nobug_choice';
-  const bugChoiceLabel = document.createElement('label');
-  bugChoiceLabel.htmlFor = bugChoice.id;
-  bugChoiceLabel.textContent = 'bug';
-  const nobugChoice = document.createElement('input');
-  nobugChoice.id = 'bdc_nobugChoice';
-  nobugChoice.type = 'radio';
-  nobugChoice.value = 'nobug';
-  nobugChoice.name = 'bug_nobug_choice';
-  const nobugChoiceLabel = document.createElement('label');
-  nobugChoiceLabel.htmlFor = nobugChoice.id;
-  nobugChoiceLabel.textContent = 'nobug';
+
+  const regressionChoice = addChoice(form, 'regression', 'Regression');
+  const bugChoice = addChoice(form, 'bug', 'Bug (but not a regression)');
+  const unknownregressionChoice = addChoice(form, 'bug_unknown_regression', 'Bug (unknown if it is a regression)');
+  const nobugChoice = addChoice(form, 'nobug', 'Not a bug');
+
   const submit = document.createElement('button');
   submit.textContent = 'Submit';
   submit.onclick = function(e) {
     e.preventDefault();
 
-    if (!bugChoice.checked && !nobugChoice.checked) {
+    let categorization;
+    if (regressionChoice.checked) {
+      categorization = 'regression'
+    } else if (unknownregressionChoice.checked) {
+      categorization = 'bug_unknown_regression';
+    } else if (bugChoice.checked) {
+      categorization = 'bug_no_regression';
+    } else if (nobugChoice.checked) {
+      categorization = 'nobug';
+    } else {
       alert('You need to select something!');
     }
 
-    if (bugChoice.checked && nobugChoice.checked) {
-      alert('Both options are checked, something has gone really wrong!');
-    }
-
     browser.storage.sync.set({
-        [bugId]: bugChoice.checked ? 1 : 0,
+        [bugId]: categorization,
     });
   };
 
   new_comment_actions.appendChild(document.createElement('br'));
   new_comment_actions.appendChild(form);
-  form.appendChild(bugChoice);
-  form.appendChild(bugChoiceLabel);
-  form.appendChild(nobugChoice);
-  form.appendChild(nobugChoiceLabel);
   form.appendChild(document.createElement('br'));
   form.appendChild(submit);
 })();
