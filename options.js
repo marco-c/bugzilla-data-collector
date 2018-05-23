@@ -1,13 +1,18 @@
 document.getElementById('downloadData').onclick = function() {
   browser.storage.sync.get()
   .then(function(data) {
-      let blob = new Blob([JSON.stringify(data)], {
-        type: 'application/json',
+      let csv = 'bug_id,category\n';
+      for (let bugId in data) {
+          csv += `${bugId},${data[bugId]}\n`;
+      }
+
+      let blob = new Blob([csv], {
+        type: 'text/csv',
       });
 
       return browser.downloads.download({
         url : window.URL.createObjectURL(blob),
-        filename : 'data.json',
+        filename : 'data.csv',
       });
   })
   .catch(function(e) {
