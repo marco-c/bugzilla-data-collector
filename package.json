@@ -1,6 +1,6 @@
 {
   "name": "bugzilla-data-collector",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "An extension to help collecting data on Bugzilla.",
   "dependencies": {
     "web-ext": "^2.4.0"
