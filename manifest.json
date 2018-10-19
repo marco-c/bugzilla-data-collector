@@ -9,7 +9,7 @@
   "description": "An extension to help collecting data on Bugzilla.",
   "content_scripts": [
     {
-      "matches": ["*://bugzilla.mozilla.org/show_bug.cgi?id=*"],
+      "matches": ["*://bugzilla.mozilla.org/*"],
       "js": ["bugzilla.js"],
       "run_at": "document_end"
     }
