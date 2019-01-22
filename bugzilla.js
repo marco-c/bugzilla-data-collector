@@ -56,7 +56,7 @@ function addChoice(form, value, text) {
     }
 
     browser.storage.sync.set({
-        [bugId]: categorization,
+      [bugId]: categorization,
     });
   };
 

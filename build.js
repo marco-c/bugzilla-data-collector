@@ -1,7 +1,6 @@
 'use strict';
 
 const fs = require('fs');
-const https = require('https');
 const archiver = require('archiver');
 
 const includeFiles = [
