@@ -31,14 +31,29 @@ function addChoice(form, value, text) {
   }
 
   const form = document.createElement('form');
-
+  
   const regressionChoice = addChoice(form, 'regression', 'Regression');
   const bugChoice = addChoice(form, 'bug', 'Bug (but not a regression)');
   const unknownregressionChoice = addChoice(form, 'bug_unknown_regression', 'Bug (unknown if it is a regression)');
   const nobugChoice = addChoice(form, 'nobug', 'Not a bug');
 
+  const qa_form = document.createElement('form');
+
+  const qaChoice = addChoice(qa_form, 'qa', 'Bug that needs QA');
+  const noqaChoice = addChoice(qa_form, 'noqa', 'Bug that doesn\'t need QA');
+
+  const keywords = document.getElementById('field-keywords').textContent;
+  const flags = document.getElementById('module-firefox-tracking-flags-content');
+  if(keywords && keywords.includes('qawanted') || flags && flags.textContent.includes('qe-verify')){
+    qaChoice.checked = true;
+  } else {
+    noqaChoice.checked = true;
+  }
+
   const submit = document.createElement('button');
+  const qa_submit = document.createElement('button');
   submit.textContent = 'Submit';
+  qa_submit.textContent = 'Submit';
   submit.onclick = function(e) {
     e.preventDefault();
 
@@ -59,9 +74,27 @@ function addChoice(form, value, text) {
       [bugId]: categorization,
     });
   };
+  qa_submit.onclick = function(e) {
+    let qa;
+    if(qaChoice.checked){
+      qa = "qa";
+    } else if (noqaChoice.checked){
+      qa = "noqa";
+    } else {
+      alert('You need to select something!');
+    }
+
+    browser.storage.sync.set({
+      [bugId]: qa,
+    });
+  }
 
   new_comment_actions.appendChild(document.createElement('br'));
   new_comment_actions.appendChild(form);
   form.appendChild(document.createElement('br'));
   form.appendChild(submit);
+  new_comment_actions.appendChild(document.createElement('br'));
+  new_comment_actions.appendChild(qa_form);
+  form.appendChild(document.createElement('br'));
+  qa_form.appendChild(qa_submit);
 })();
