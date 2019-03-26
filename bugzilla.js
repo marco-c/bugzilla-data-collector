@@ -31,6 +31,7 @@ function addChoice(form, value, text) {
   }
 
   const form = document.createElement('form');
+
   const regressionChoice = addChoice(form, 'regression', 'Regression');
   const bugChoice = addChoice(form, 'bug', 'Bug (but not a regression)');
   const unknownregressionChoice = addChoice(form, 'bug_unknown_regression', 'Bug (unknown if it is a regression)');
