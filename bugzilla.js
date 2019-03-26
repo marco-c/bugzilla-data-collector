@@ -94,7 +94,6 @@ function addChoice(form, value, text) {
 
     browser.storage.sync.get("qa").then(function(data){
       data = data["qa"];
-      console.log(data);
       if(typeof data  === 'undefined'){
         data = {[bugId]: qa};
       } else {
