@@ -31,7 +31,6 @@ function addChoice(form, value, text) {
   }
 
   const form = document.createElement('form');
-  
   const regressionChoice = addChoice(form, 'regression', 'Regression');
   const bugChoice = addChoice(form, 'bug', 'Bug (but not a regression)');
   const unknownregressionChoice = addChoice(form, 'bug_unknown_regression', 'Bug (unknown if it is a regression)');
@@ -39,7 +38,7 @@ function addChoice(form, value, text) {
 
   const qa_form = document.createElement('form');
 
-  const qaChoice = addChoice(qa_form, 'qa', 'Bug that needs QA');
+  const qaChoice = addChoice(qa_form, 'qa', 'Bug that need QA');
   const noqaChoice = addChoice(qa_form, 'noqa', 'Bug that doesn\'t need QA');
 
   const keywords = document.getElementById('field-keywords').textContent;
@@ -70,11 +69,19 @@ function addChoice(form, value, text) {
       alert('You need to select something!');
     }
 
-    browser.storage.sync.set({
-      [bugId]: categorization,
+    browser.storage.sync.get("categorization").then(function(data){
+      data = data["categorization"];
+      if(typeof data  === 'undefined'){
+        data = {[bugId]: categorization};
+      } else {
+        data[bugId] = categorization;
+      }
+      browser.storage.sync.set({["categorization"]: data});
     });
   };
   qa_submit.onclick = function(e) {
+    e.preventDefault();
+
     let qa;
     if(qaChoice.checked){
       qa = "qa";
@@ -84,10 +91,17 @@ function addChoice(form, value, text) {
       alert('You need to select something!');
     }
 
-    browser.storage.sync.set({
-      [bugId]: qa,
+    browser.storage.sync.get("qa").then(function(data){
+      data = data["qa"];
+      console.log(data);
+      if(typeof data  === 'undefined'){
+        data = {[bugId]: qa};
+      } else {
+        data[bugId] = qa;
+      }
+      browser.storage.sync.set({["qa"]: data});
     });
-  }
+  };
 
   new_comment_actions.appendChild(document.createElement('br'));
   new_comment_actions.appendChild(form);
@@ -95,6 +109,7 @@ function addChoice(form, value, text) {
   form.appendChild(submit);
   new_comment_actions.appendChild(document.createElement('br'));
   new_comment_actions.appendChild(qa_form);
-  form.appendChild(document.createElement('br'));
+  qa_form.appendChild(document.createElement('br'));
   qa_form.appendChild(qa_submit);
 })();
+
