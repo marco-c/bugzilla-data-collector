@@ -3,13 +3,13 @@
   "version": "0.0.4",
   "description": "An extension to help collecting data on Bugzilla.",
   "dependencies": {
-    "web-ext": "^2.4.0"
+    "web-ext": "^3.0.0"
   },
   "peerDependencies": {
     "eslint": ">=0.8.0"
   },
   "devDependencies": {
-    "eslint-plugin-mozilla": "^0.9.0",
+    "eslint-plugin-mozilla": "^1.1.3",
     "eslint-plugin-no-unsanitized": "^3.0.0"
   },
   "scripts": {
