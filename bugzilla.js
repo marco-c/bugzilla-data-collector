@@ -39,12 +39,12 @@ function addChoice(form, value, text) {
 
   const qa_form = document.createElement('form');
 
-  const qaChoice = addChoice(qa_form, 'qa', 'Bug that need QA');
-  const noqaChoice = addChoice(qa_form, 'noqa', 'Bug that doesn\'t need QA');
+  const qaChoice = addChoice(qa_form, 'qaneeded', 'Bug that needs QA');
+  const noqaChoice = addChoice(qa_form, 'noqaneeded', 'Bug that doesn\'t need QA');
 
   const keywords = document.getElementById('field-keywords').textContent;
   const flags = document.getElementById('module-firefox-tracking-flags-content');
-  if(keywords && keywords.includes('qawanted') || flags && flags.textContent.includes('qe-verify')){
+  if ((keywords && keywords.includes('qawanted')) || (flags && flags.textContent.includes('qe-verify'))) {
     qaChoice.checked = true;
   } else {
     noqaChoice.checked = true;
@@ -57,49 +57,49 @@ function addChoice(form, value, text) {
   submit.onclick = function(e) {
     e.preventDefault();
 
-    let categorization;
+    let regression_bug_nobug;
     if (regressionChoice.checked) {
-      categorization = 'regression'
+      regression_bug_nobug = 'regression'
     } else if (unknownregressionChoice.checked) {
-      categorization = 'bug_unknown_regression';
+      regression_bug_nobug = 'bug_unknown_regression';
     } else if (bugChoice.checked) {
-      categorization = 'bug_no_regression';
+      regression_bug_nobug = 'bug_no_regression';
     } else if (nobugChoice.checked) {
-      categorization = 'nobug';
+      regression_bug_nobug = 'nobug';
     } else {
       alert('You need to select something!');
     }
 
-    browser.storage.sync.get("categorization").then(function(data){
-      data = data["categorization"];
-      if(typeof data  === 'undefined'){
-        data = {[bugId]: categorization};
+    browser.storage.sync.get("regression_bug_nobug").then(function(data) {
+      data = data["regression_bug_nobug"];
+      if (typeof data  === 'undefined') {
+        data = {[bugId]: regression_bug_nobug};
       } else {
-        data[bugId] = categorization;
+        data[bugId] = regression_bug_nobug;
       }
-      browser.storage.sync.set({["categorization"]: data});
+      browser.storage.sync.set({["regression_bug_nobug"]: data});
     });
   };
   qa_submit.onclick = function(e) {
     e.preventDefault();
 
     let qa;
-    if(qaChoice.checked){
-      qa = "qa";
-    } else if (noqaChoice.checked){
-      qa = "noqa";
+    if (qaChoice.checked) {
+      qa = "qaneeded";
+    } else if (noqaChoice.checked) {
+      qa = "noqaneeded";
     } else {
       alert('You need to select something!');
     }
 
-    browser.storage.sync.get("qa").then(function(data){
-      data = data["qa"];
-      if(typeof data  === 'undefined'){
+    browser.storage.sync.get("qaneeded").then(function(data) {
+      data = data["qaneeded"];
+      if (typeof data  === 'undefined') {
         data = {[bugId]: qa};
       } else {
         data[bugId] = qa;
       }
-      browser.storage.sync.set({["qa"]: data});
+      browser.storage.sync.set({["qaneeded"]: data});
     });
   };
 

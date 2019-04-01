@@ -14,19 +14,19 @@ function downloadCsv(data){
   });
 
 }
-document.getElementById('downloadCategorizationData').onclick = function() {
-  browser.storage.sync.get("categorization")
+document.getElementById('downloadRegressionBugNobugData').onclick = function() {
+  browser.storage.sync.get("regression_bug_nobug")
     .then(function(data) {
-      return downloadCsv(data["categorization"]);
+      return downloadCsv(data["regression_bug_nobug"]);
     })
     .catch(function(e) {
       alert('Error ' + e);
     });
 };
-document.getElementById('downloadQaData').onclick = function() {
-  browser.storage.sync.get("qa")
+document.getElementById('downloadQaNeededData').onclick = function() {
+  browser.storage.sync.get("qaneeded")
     .then(function(data) {
-      return downloadCsv(data["qa"]);
+      return downloadCsv(data["qaneeded"]);
     })
     .catch(function(e) {
       alert('Error ' + e);
