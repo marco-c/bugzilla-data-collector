@@ -39,15 +39,15 @@ function addChoice(form, value, text) {
 
   const qa_form = document.createElement('form');
 
-  const qaChoice = addChoice(qa_form, 'qaneeded', 'Bug that needs QA');
-  const noqaChoice = addChoice(qa_form, 'noqaneeded', 'Bug that doesn\'t need QA');
+  const qaneededChoice = addChoice(qa_form, 'qaneeded', 'Bug that needs QA');
+  const noqaneededChoice = addChoice(qa_form, 'noqaneeded', 'Bug that doesn\'t need QA');
 
   const keywords = document.getElementById('field-keywords').textContent;
   const flags = document.getElementById('module-firefox-tracking-flags-content');
   if ((keywords && keywords.includes('qawanted')) || (flags && flags.textContent.includes('qe-verify'))) {
-    qaChoice.checked = true;
+    qaneededChoice.checked = true;
   } else {
-    noqaChoice.checked = true;
+    noqaneededChoice.checked = true;
   }
 
   const submit = document.createElement('button');
@@ -84,9 +84,9 @@ function addChoice(form, value, text) {
     e.preventDefault();
 
     let qa;
-    if (qaChoice.checked) {
+    if (qaneededChoice.checked) {
       qa = "qaneeded";
-    } else if (noqaChoice.checked) {
+    } else if (noqaneededChoice.checked) {
       qa = "noqaneeded";
     } else {
       alert('You need to select something!');
