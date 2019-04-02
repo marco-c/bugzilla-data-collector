@@ -37,26 +37,69 @@ function addChoice(form, value, text) {
   const unknownregressionChoice = addChoice(form, 'bug_unknown_regression', 'Bug (unknown if it is a regression)');
   const nobugChoice = addChoice(form, 'nobug', 'Not a bug');
 
+  const qa_form = document.createElement('form');
+
+  const qaneededChoice = addChoice(qa_form, 'qaneeded', 'Bug that needs QA');
+  const noqaneededChoice = addChoice(qa_form, 'noqaneeded', 'Bug that doesn\'t need QA');
+
+  const keywords = document.getElementById('field-keywords').textContent;
+  const flags = document.getElementById('module-firefox-tracking-flags-content');
+  if ((keywords && keywords.includes('qawanted')) || (flags && flags.textContent.includes('qe-verify'))) {
+    qaneededChoice.checked = true;
+  } else {
+    noqaneededChoice.checked = true;
+  }
+
   const submit = document.createElement('button');
+  const qa_submit = document.createElement('button');
   submit.textContent = 'Submit';
+  qa_submit.textContent = 'Submit';
   submit.onclick = function(e) {
     e.preventDefault();
 
-    let categorization;
+    let regression_bug_nobug;
     if (regressionChoice.checked) {
-      categorization = 'regression'
+      regression_bug_nobug = 'regression'
     } else if (unknownregressionChoice.checked) {
-      categorization = 'bug_unknown_regression';
+      regression_bug_nobug = 'bug_unknown_regression';
     } else if (bugChoice.checked) {
-      categorization = 'bug_no_regression';
+      regression_bug_nobug = 'bug_no_regression';
     } else if (nobugChoice.checked) {
-      categorization = 'nobug';
+      regression_bug_nobug = 'nobug';
     } else {
       alert('You need to select something!');
     }
 
-    browser.storage.sync.set({
-      [bugId]: categorization,
+    browser.storage.sync.get('regression_bug_nobug').then(function(data) {
+      data = data['regression_bug_nobug'];
+      if (typeof data  === 'undefined') {
+        data = {[bugId]: regression_bug_nobug};
+      } else {
+        data[bugId] = regression_bug_nobug;
+      }
+      browser.storage.sync.set({['regression_bug_nobug']: data});
+    });
+  };
+  qa_submit.onclick = function(e) {
+    e.preventDefault();
+
+    let qa;
+    if (qaneededChoice.checked) {
+      qa = 'qaneeded';
+    } else if (noqaneededChoice.checked) {
+      qa = 'noqaneeded';
+    } else {
+      alert('You need to select something!');
+    }
+
+    browser.storage.sync.get('qaneeded').then(function(data) {
+      data = data['qaneeded'];
+      if (typeof data  === 'undefined') {
+        data = {[bugId]: qa};
+      } else {
+        data[bugId] = qa;
+      }
+      browser.storage.sync.set({['qaneeded']: data});
     });
   };
 
@@ -64,4 +107,9 @@ function addChoice(form, value, text) {
   new_comment_actions.appendChild(form);
   form.appendChild(document.createElement('br'));
   form.appendChild(submit);
+  new_comment_actions.appendChild(document.createElement('br'));
+  new_comment_actions.appendChild(qa_form);
+  qa_form.appendChild(document.createElement('br'));
+  qa_form.appendChild(qa_submit);
 })();
+
