@@ -70,14 +70,14 @@ function addChoice(form, value, text) {
       alert('You need to select something!');
     }
 
-    browser.storage.sync.get("regression_bug_nobug").then(function(data) {
-      data = data["regression_bug_nobug"];
+    browser.storage.sync.get('regression_bug_nobug').then(function(data) {
+      data = data['regression_bug_nobug'];
       if (typeof data  === 'undefined') {
         data = {[bugId]: regression_bug_nobug};
       } else {
         data[bugId] = regression_bug_nobug;
       }
-      browser.storage.sync.set({["regression_bug_nobug"]: data});
+      browser.storage.sync.set({['regression_bug_nobug']: data});
     });
   };
   qa_submit.onclick = function(e) {
@@ -85,21 +85,21 @@ function addChoice(form, value, text) {
 
     let qa;
     if (qaneededChoice.checked) {
-      qa = "qaneeded";
+      qa = 'qaneeded';
     } else if (noqaneededChoice.checked) {
-      qa = "noqaneeded";
+      qa = 'noqaneeded';
     } else {
       alert('You need to select something!');
     }
 
-    browser.storage.sync.get("qaneeded").then(function(data) {
-      data = data["qaneeded"];
+    browser.storage.sync.get('qaneeded').then(function(data) {
+      data = data['qaneeded'];
       if (typeof data  === 'undefined') {
         data = {[bugId]: qa};
       } else {
         data[bugId] = qa;
       }
-      browser.storage.sync.set({["qaneeded"]: data});
+      browser.storage.sync.set({['qaneeded']: data});
     });
   };
 

@@ -15,18 +15,18 @@ function downloadCsv(data){
 
 }
 document.getElementById('downloadRegressionBugNobugData').onclick = function() {
-  browser.storage.sync.get("regression_bug_nobug")
+  browser.storage.sync.get('regression_bug_nobug')
     .then(function(data) {
-      return downloadCsv(data["regression_bug_nobug"]);
+      return downloadCsv(data['regression_bug_nobug']);
     })
     .catch(function(e) {
       alert('Error ' + e);
     });
 };
 document.getElementById('downloadQaNeededData').onclick = function() {
-  browser.storage.sync.get("qaneeded")
+  browser.storage.sync.get('qaneeded')
     .then(function(data) {
-      return downloadCsv(data["qaneeded"]);
+      return downloadCsv(data['qaneeded']);
     })
     .catch(function(e) {
       alert('Error ' + e);
