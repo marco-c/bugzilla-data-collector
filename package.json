@@ -3,7 +3,7 @@
   "version": "0.0.4",
   "description": "An extension to help collecting data on Bugzilla.",
   "dependencies": {
-    "web-ext": "5.0.0"
+    "web-ext": "5.1.0"
   },
   "peerDependencies": {
     "eslint": ">=0.8.0"
